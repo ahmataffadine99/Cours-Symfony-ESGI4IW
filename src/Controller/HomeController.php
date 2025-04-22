@@ -16,7 +16,7 @@ final class HomeController extends AbstractController
 {
 
     #[Route('/', name: 'app_home')]  // Ajoute cette route pour la page d'accueil
-    public function home(
+    public function index(
         MediaRepository $media,
     ): Response
     {
@@ -28,6 +28,17 @@ final class HomeController extends AbstractController
     }
 
 
+    #[Route('/home', name: 'app_home')]
+    public function home(
+        MediaRepository $media,
+    ): Response
+    {
+        $medias = $media->findPopulars(maxResults: 18);
+
+        return $this->render('others/home.html.twig', [
+            'medias' => $medias,
+        ]);
+    }
 
     #[Route('/subscriptions', name: 'app_subscriptions')]
     public function subscriptions(SubscriptionRepository $subscriptionRepository): Response
